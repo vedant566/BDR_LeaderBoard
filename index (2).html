@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BDR Battle Board — April 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #FF6B2B; --gold: #F5A623; --purple: #7B5FE8;
+      --green: #22C55E; --red: #EF4444; --amber: #F59E0B;
+      --bg: #0C0E1A; --bg2: #13162A;
+      --border: rgba(255,255,255,0.07);
+      --text: #F0F2FF; --text-sub: rgba(240,242,255,0.5); --text-dim: rgba(240,242,255,0.25);
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background: radial-gradient(ellipse 80% 50% at 20% -10%, rgba(255,107,43,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 40% at 80% 110%, rgba(123,95,232,0.1) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+    .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
+
+    /* Hero */
+    .hero { text-align: center; margin-bottom: 56px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 32px; height: 1px; background: var(--orange); opacity: 0.5; }
+    .hero-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: clamp(52px, 10vw, 88px);
+      font-weight: 900; line-height: .92; text-transform: uppercase; letter-spacing: -.01em; margin-bottom: 16px;
+    }
+    .hero-title span { color: var(--orange); }
+    .hero-sub { font-size: 15px; color: var(--text-sub); }
+
+    /* Section */
+    .section { margin-bottom: 60px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: .03em; }
+    .section-title span { color: var(--orange); }
+    .target-pill { font-size: 12px; font-weight: 500; background: rgba(255,107,43,0.1); color: var(--orange); border: 1px solid rgba(255,107,43,0.25); border-radius: 20px; padding: 5px 12px; }
+
+    /* Podium */
+    .podium { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 12px; margin-bottom: 16px; align-items: end; }
+    .podium-card {
+      border-radius: 20px; padding: 24px 16px 20px; border: 1px solid var(--border); background: var(--bg2);
+      text-align: center; position: relative; overflow: hidden; animation: fadeUp 0.6s ease both;
+    }
+    .podium-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,255,255,0.03) 0%, transparent 60%); pointer-events: none; }
+    .podium-card.rank-1 { border-color: rgba(245,166,35,0.4); background: linear-gradient(160deg, rgba(245,166,35,0.08) 0%, var(--bg2) 60%); padding-top: 32px; }
+    .podium-card.rank-2 { animation-delay: 0.1s; }
+    .podium-card.rank-3 { animation-delay: 0.2s; }
+    .rank-crown { font-size: 28px; margin-bottom: 10px; display: block; }
+    .rank-1 .rank-crown { font-size: 36px; animation: bounce 2s ease-in-out infinite; }
+    .podium-avatar { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; margin: 0 auto 12px; }
+    .rank-1 .podium-avatar { width: 72px; height: 72px; font-size: 24px; border: 2px solid var(--gold); }
+    .podium-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 4px; }
+    .rank-1 .podium-name { font-size: 26px; color: var(--orange); }
+    .podium-demos { font-size: 13px; color: var(--text-sub); margin-bottom: 10px; }
+    .podium-pct { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 10px; }
+    .rank-1 .podium-pct { font-size: 34px; color: var(--green); }
+    .cap-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: .04em; }
+
+    /* Rest rows */
+    .rest-table { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; margin-bottom: 16px; }
+    .rest-row { display: grid; grid-template-columns: 48px 1fr 160px 72px; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); animation: fadeUp 0.5s ease both; }
+    .rest-row:last-child { border-bottom: none; }
+    .rest-row:nth-child(1) { animation-delay: 0.3s; }
+    .rest-row:nth-child(2) { animation-delay: 0.4s; }
+    .rest-row:nth-child(3) { animation-delay: 0.5s; }
+    .rest-rank-num { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--text-dim); text-align: center; }
+    .rest-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .rest-name-cell { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .rest-name { font-size: 15px; font-weight: 500; }
+    .rest-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .bar-track { height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
+    .bar-fill { height: 100%; border-radius: 3px; }
+    .bar-label { font-size: 11px; color: var(--text-dim); }
+    .rest-pct-num { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; text-align: right; }
+
+    /* Strips */
+    .strip { border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 500; margin-top: 12px; }
+    .strip-fire { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: #FCA5A5; }
+    .strip-go   { background: rgba(34,197,94,0.08);  border: 1px solid rgba(34,197,94,0.2);  color: #86EFAC; }
+    .strip-icon { font-size: 22px; flex-shrink: 0; }
+
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 48px 0; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 40px; justify-content: center; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-sub); }
+    .footer { text-align: center; margin-top: 60px; font-size: 12px; color: var(--text-dim); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    @media (max-width: 600px) {
+      .podium { gap: 8px; }
+      .podium-name { font-size: 16px; }
+      .podium-pct { font-size: 20px; }
+      .rest-row { grid-template-columns: 36px 1fr 100px 56px; gap: 8px; padding: 12px 14px; }
+      .cap-badge { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-eyebrow">April 2025</div>
+    <h1 class="hero-title">BDR<br><span>Battle</span> Board</h1>
+    <p class="hero-sub">Who's leading the charge this month?</p>
+  </div>
+
+  <!-- OUTBOUND -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">⚡ <span>Outbound</span> Team</div>
+      <div class="target-pill">🎯 Target: 4 demos / month</div>
+    </div>
+
+    <div class="podium">
+      <div class="podium-card rank-2">
+        <span class="rank-crown">🥈</span>
+        <div class="podium-avatar" style="background:rgba(180,178,169,0.15);color:#B4B2A9;">AD</div>
+        <div class="podium-name">Aditya</div>
+        <div class="podium-demos">2 demos</div>
+        <div class="podium-pct" style="color:var(--amber);">50%</div>
+        <span class="cap-badge" style="background:rgba(180,178,169,0.1);color:#B4B2A9;">🟢 Silver Cap</span>
+      </div>
+      <div class="podium-card rank-1">
+        <span class="rank-crown">🏆</span>
+        <div class="podium-avatar" style="background:rgba(245,166,35,0.15);color:var(--gold);">MN</div>
+        <div class="podium-name">Manas</div>
+        <div class="podium-demos">4 demos</div>
+        <div class="podium-pct">100%</div>
+        <span class="cap-badge" style="background:rgba(255,107,43,0.15);color:var(--orange);">🧢 Orange Cap</span>
+      </div>
+      <div class="podium-card rank-3">
+        <span class="rank-crown">🥉</span>
+        <div class="podium-avatar" style="background:rgba(216,90,48,0.15);color:#D85A30;">PG</div>
+        <div class="podium-name">Pragadeesh</div>
+        <div class="podium-demos">1 demo</div>
+        <div class="podium-pct" style="color:var(--red);">25%</div>
+        <span class="cap-badge" style="background:rgba(216,90,48,0.1);color:#D85A30;">🔶 Bronze Cap</span>
+      </div>
+    </div>
+
+    <div class="rest-table">
+      <div class="rest-row">
+        <div class="rest-rank-num">4</div>
+        <div class="rest-name-cell">
+          <div class="rest-avatar" style="background:rgba(55,138,221,0.15);color:#378ADD;">AT</div>
+          <span class="rest-name">Adithya</span>
+          <span class="rest-badge" style="background:rgba(55,138,221,0.1);color:#60A5FA;">🚀 On the board</span>
+        </div>
+        <div>
+          <div class="bar-track"><div class="bar-fill" style="width:25%;background:#378ADD;"></div></div>
+          <div class="bar-label">1 / 4 demos</div>
+        </div>
+        <div class="rest-pct-num" style="color:#378ADD;">25%</div>
+      </div>
+      <div class="rest-row">
+        <div class="rest-rank-num">5</div>
+        <div class="rest-name-cell">
+          <div class="rest-avatar" style="background:rgba(239,68,68,0.15);color:#EF4444;">VR</div>
+          <span class="rest-name">Varun</span>
+          <span class="rest-badge" style="background:rgba(239,68,68,0.1);color:#FCA5A5;">🔥 Hungry for demos</span>
+        </div>
+        <div>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#EF4444;"></div></div>
+          <div class="bar-label">0 / 4 demos</div>
+        </div>
+        <div class="rest-pct-num" style="color:#EF4444;">0%</div>
+      </div>
+      <div class="rest-row">
+        <div class="rest-rank-num">6</div>
+        <div class="rest-name-cell">
+          <div class="rest-avatar" style="background:rgba(239,68,68,0.15);color:#EF4444;">AJ</div>
+          <span class="rest-name">Arjun</span>
+          <span class="rest-badge" style="background:rgba(239,68,68,0.1);color:#FCA5A5;">🔥 Hungry for demos</span>
+        </div>
+        <div>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#EF4444;"></div></div>
+          <div class="bar-label">0 / 4 demos</div>
+        </div>
+        <div class="rest-pct-num" style="color:#EF4444;">0%</div>
+      </div>
+    </div>
+
+    <div class="strip strip-fire">
+      <span class="strip-icon">🔥</span>
+      Varun &amp; Arjun — 4 demos to climb to the top. One great week and you're on the podium!
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PIPE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">🔗 <span>Pipe</span> Team</div>
+      <div class="target-pill">🎯 Target: 5 demos / month</div>
+    </div>
+
+    <div class="podium">
+      <div class="podium-card rank-2">
+        <span class="rank-crown">🥈</span>
+        <div class="podium-avatar" style="background:rgba(180,178,169,0.15);color:#B4B2A9;">SH</div>
+        <div class="podium-name">Shrey</div>
+        <div class="podium-demos">2 demos</div>
+        <div class="podium-pct" style="color:var(--red);">40%</div>
+        <span class="cap-badge" style="background:rgba(180,178,169,0.1);color:#B4B2A9;">⭐ Rising Star</span>
+      </div>
+      <div class="podium-card rank-1">
+        <span class="rank-crown">🏆</span>
+        <div class="podium-avatar" style="background:rgba(245,166,35,0.15);color:var(--gold);">SY</div>
+        <div class="podium-name" style="color:var(--orange);">Shreyancy</div>
+        <div class="podium-demos">4 demos</div>
+        <div class="podium-pct" style="color:var(--amber);">80%</div>
+        <span class="cap-badge" style="background:rgba(255,107,43,0.15);color:var(--orange);">🧢 Orange Cap</span>
+      </div>
+      <div class="podium-card rank-3" style="border-color:rgba(123,95,232,0.3);background:linear-gradient(160deg,rgba(123,95,232,0.06) 0%,var(--bg2) 60%);">
+        <span class="rank-crown">🥉</span>
+        <div class="podium-avatar" style="background:rgba(123,95,232,0.15);color:#A78BFA;">MN</div>
+        <div class="podium-name">Manas</div>
+        <div class="podium-demos">2 demos</div>
+        <div class="podium-pct" style="color:var(--red);">40%</div>
+        <span class="cap-badge" style="background:rgba(123,95,232,0.12);color:#A78BFA;">🎩 Purple Cap</span>
+      </div>
+    </div>
+
+    <div class="strip strip-go">
+      <span class="strip-icon">⚡</span>
+      Shreyancy is just 1 demo away from hitting target! Can the team close the gap in May?
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span>🧢</span> Orange Cap — Team leader</div>
+    <div class="legend-item"><span>🎩</span> Purple Cap — Double duty (both teams)</div>
+    <div class="legend-item"><span>⭐</span> Rising Star — Watch this space</div>
+    <div class="legend-item"><span>🔥</span> Hungry for demos — Time to hunt!</div>
+  </div>
+
+  <div class="footer">BDR Battle Board · April 2025 · Updated monthly</div>
+</div>
+</body>
+</html>
